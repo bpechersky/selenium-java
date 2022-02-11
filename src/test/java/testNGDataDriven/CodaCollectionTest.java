@@ -11,6 +11,8 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 
+import java.util.concurrent.TimeUnit;
+
 import static org.openqa.selenium.support.ui.ExpectedConditions.numberOfWindowsToBe;
 
 
@@ -61,7 +63,6 @@ public class CodaCollectionTest {
         WebDriverWait wait = new WebDriverWait(driver,10);
         WebElement qa_job_link = driver.findElement(By.xpath("//a[contains(text(),'QA')]"));
         wait.until(ExpectedConditions.visibilityOf(qa_job_link));
-//        WebElement qa_job_link = driver.findElement(By.xpath("//div[contains(text),'QA Engineer']"));
         qa_job_link.click();
         String URL = driver.getCurrentUrl();
         Assert.assertTrue(URL.contains("qa-engineer-remote"));
@@ -69,5 +70,23 @@ public class CodaCollectionTest {
 
 
     }
-
+    @Test
+    public void thirdTest()
+    {
+        WebDriver driver = new ChromeDriver();
+        driver.get("https://codacollection.co/");
+  //      driver.manage().window().maximize();
+        WebDriverWait wait = new WebDriverWait(driver,10);
+        WebElement email_list = driver.findElement(By.xpath("//input[@type='email']"));
+        wait.until(ExpectedConditions.visibilityOf(email_list));
+        email_list.sendKeys("test@test.com");
+        WebElement btn_subscribe = driver.findElement(By.xpath("//button[@aria-label='Submit']"));
+        btn_subscribe.click();
+        driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
+        WebElement success_text = driver.findElement(By.xpath("//div[@class='Text__PrimaryText-sc-15dpo10-1 dxRVgw']"));
+        wait.until(ExpectedConditions.visibilityOf(success_text));
+        String text = success_text.getText();
+        Assert.assertEquals(text,"Great. You're in.");
+        driver.quit();
+    }
 }
